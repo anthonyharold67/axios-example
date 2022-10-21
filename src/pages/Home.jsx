@@ -1,11 +1,14 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import Container from 'react-bootstrap/Container'
+import Image from 'react-bootstrap/Image'
 import AddTodo from '../components/AddTodo'
 import TodoList from '../components/TodoList'
+import loadingGif from "../assets/loading.gif"
 
 const Home = () => {
     const [todos,setTodos] = useState()
+    const [loading,setLoading]=useState(true)
   
     const url = "https://634e52d94af5fdff3a589e1a.mockapi.io/api/todos/"
   //+ read işlemi için
@@ -33,13 +36,23 @@ const Home = () => {
   }
   useEffect(()=>{
     getTodos()
+    setTimeout(()=>{
+      setLoading(false)
+    },3000)
   },[])
 
   return (
-    <Container className="mt-4">
+    <div className="justify-content-center mx-auto">
+    {
+      loading ? (<Image src={loadingGif} className=" d-flex justify-content-center mt-3 mx-auto" />) : 
+      (
+        <Container className="mt-4">
         <AddTodo postTodo={postTodo} />
         <TodoList todos={todos} deleteTodo={deleteTodo} />
     </Container>
+      )
+    }
+    </div>
   )
 }
 
